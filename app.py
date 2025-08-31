@@ -52,7 +52,7 @@ def download_from_s3(s3_key: str, local_path: str):
     print(f"Downloaded {s3_key} to {local_path}")
 
 def load_model():
-    global model, metadata, model_load_time
+    global model, model_load_time
     
     start_time = time.time()
     
