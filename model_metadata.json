@@ -1,0 +1,26 @@
+{
+  "metrics": {
+    "MAE": 72169.83277433336,
+    "RMSE": 211134.72545285683,
+    "R2": 0.5082547443329597
+  },
+  "numeric_features": [],
+  "categorical_features": [
+    "Hospital County",
+    "Age Group",
+    "Gender",
+    "Race",
+    "Length of Stay",
+    "Type of Admission",
+    "Patient Disposition",
+    "APR DRG Description",
+    "APR Severity of Illness Description",
+    "APR Risk of Mortality",
+    "Payment Typology 1",
+    "Payment Typology 2",
+    "Payment Typology 3"
+  ],
+  "dropped": [
+    "Total Costs"
+  ]
+}
