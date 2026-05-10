@@ -89,11 +89,7 @@ This project does not include:
 
 ### Dropped Variable
 
-- Total Costs
-
-### Numeric Features
-
-- None
+- Total Costs (Total Costs are what the hospital internally incurs, while Total Charges are what the hospital bills the patient/insurer. Many values of Total Costs were also missing, so the variable as a whole was dropped as imputation was not a viable option for this model.)
 
 This model is primarily driven by categorical feature engineering.
 
