@@ -10,6 +10,43 @@ This project demonstrates a cloud-native machine learning deployment workflow wi
 
 ---
 
+## Architecture Diagram
+
+```mermaid
+flowchart LR
+
+    A["Client<br/>(Postman / cURL / Application)"]
+
+    B["FastAPI Service<br/>REST API"]
+
+    C["Pydantic<br/>Request Validation"]
+
+    D["Amazon S3<br/>Model Artifacts<br/>• total_charges_pipeline.joblib<br/>• model_metadata.json"]
+
+    E["Scikit-learn Pipeline"]
+
+    F["Prediction<br/>Total Charges"]
+
+    G["/health"]
+
+    H["/ready"]
+
+    I["/metrics<br/>Prometheus"]
+
+    A -->|"POST /predict"| B
+
+    B --> C
+    B -->|"Download model on startup"| D
+    D --> E
+    C --> E
+    E --> F
+
+    B --> G
+    B --> H
+    B --> I
+```
+---
+
 ## Problem Statement
 
 Healthcare cost prediction is a critical problem for hospitals, insurers, and healthcare administrators. Estimating total patient charges accurately helps improve:
@@ -195,6 +232,24 @@ for production readiness and monitoring through Prometheus.
 
 ---
 
+## Production Workflow
+
+Training Notebook
+        ↓
+Joblib Serialization
+        ↓
+Amazon S3
+        ↓
+FastAPI Startup
+        ↓
+Load Pipeline
+        ↓
+REST Prediction
+        ↓
+Prometheus Monitoring
+
+---
+
 ## How to Run
 
 ```bash
@@ -244,43 +299,7 @@ EB_Healthcare_Feature_Prediction/
 ```
 ---
 
-## Architecture Diagram
-## System Architecture
 
-```mermaid
-flowchart LR
-
-    A["Client<br/>(Postman / cURL / Application)"]
-
-    B["FastAPI Service<br/>REST API"]
-
-    C["Pydantic<br/>Request Validation"]
-
-    D["Amazon S3<br/>Model Artifacts<br/>• total_charges_pipeline.joblib<br/>• model_metadata.json"]
-
-    E["Scikit-learn Pipeline"]
-
-    F["Prediction<br/>Total Charges"]
-
-    G["/health"]
-
-    H["/ready"]
-
-    I["/metrics<br/>Prometheus"]
-
-    A -->|"POST /predict"| B
-
-    B --> C
-    B -->|"Download model on startup"| D
-    D --> E
-    C --> E
-    E --> F
-
-    B --> G
-    B --> H
-    B --> I
-```
----
 
 ## Author
 
