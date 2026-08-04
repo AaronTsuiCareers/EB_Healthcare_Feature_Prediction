@@ -245,50 +245,41 @@ EB_Healthcare_Feature_Prediction/
 ---
 
 ## Architecture Diagram
+## System Architecture
 
-                           AWS Cloud
+```mermaid
+flowchart LR
 
-┌────────────────────────────────────────────────────────────────────────────┐
-│                                                                            │
-│                    Amazon S3                                               │
-│          ┌───────────────────────────────┐                                 │
-│          │ Model Artifacts               │                                 │
-│          │ • pipeline.joblib             │                                 │
-│          │ • metadata.json               │                                 │
-│          └──────────────┬────────────────┘                                 │
-│                         │ Download at Startup                              │
-└─────────────────────────┼──────────────────────────────────────────────────┘
-                          │
-                          ▼
-                 ┌──────────────────────┐
-                 │    FastAPI Service   │
-                 │──────────────────────│
-                 │ Pydantic Validation  │
-                 │ Prediction Endpoint  │
-                 │ Health Checks        │
-                 │ Prometheus Metrics   │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 ┌──────────────────────┐
-                 │ Scikit-learn Model   │
-                 │ Pipeline             │
-                 └──────────┬───────────┘
-                            │
-                            ▼
-                 Predicted Total Charges
+    A["Client<br/>(Postman / cURL / Application)"]
 
-        ▲
-        │
-        │ REST API
-        │
-┌──────────────────────┐
-│      API Clients     │
-│ Postman              │
-│ curl                 │
-│ Applications         │
-└──────────────────────┘
+    B["FastAPI Service<br/>REST API"]
 
+    C["Pydantic<br/>Request Validation"]
+
+    D["Amazon S3<br/>Model Artifacts<br/>• total_charges_pipeline.joblib<br/>• model_metadata.json"]
+
+    E["Scikit-learn Pipeline"]
+
+    F["Prediction<br/>Total Charges"]
+
+    G["/health"]
+
+    H["/ready"]
+
+    I["/metrics<br/>Prometheus"]
+
+    A -->|"POST /predict"| B
+
+    B --> C
+    B -->|"Download model on startup"| D
+    D --> E
+    C --> E
+    E --> F
+
+    B --> G
+    B --> H
+    B --> I
+```
 ---
 
 ## Author
