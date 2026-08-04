@@ -242,6 +242,52 @@ EB_Healthcare_Feature_Prediction/
 ├── README.md
 └── prometheus.yml
 ```
+---
+
+## Architecture Diagram
+
+                           AWS Cloud
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│                    Amazon S3                                               │
+│          ┌───────────────────────────────┐                                 │
+│          │ Model Artifacts               │                                 │
+│          │ • pipeline.joblib             │                                 │
+│          │ • metadata.json               │                                 │
+│          └──────────────┬────────────────┘                                 │
+│                         │ Download at Startup                              │
+└─────────────────────────┼──────────────────────────────────────────────────┘
+                          │
+                          ▼
+                 ┌──────────────────────┐
+                 │    FastAPI Service   │
+                 │──────────────────────│
+                 │ Pydantic Validation  │
+                 │ Prediction Endpoint  │
+                 │ Health Checks        │
+                 │ Prometheus Metrics   │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Scikit-learn Model   │
+                 │ Pipeline             │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 Predicted Total Charges
+
+        ▲
+        │
+        │ REST API
+        │
+┌──────────────────────┐
+│      API Clients     │
+│ Postman              │
+│ curl                 │
+│ Applications         │
+└──────────────────────┘
 
 ---
 
